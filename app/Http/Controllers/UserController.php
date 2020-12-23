@@ -16,7 +16,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $user = $this->userRepository->fetchData();
+        $user = $this->userRepository->fetchAll();
 
         return response()->json($user, 200);
     }
@@ -32,13 +32,5 @@ class UserController extends Controller
         $user = $this->userRepository->storeNew($request->all());
 
         return response()->json($user, 200);
-    }
-
-    public function demo2()
-    {
-//        $user = $this->userRepository->getModel();
-        $result = $this->userRepository->whereQuery([['where','name', 'like', 'demoA'], ['orWhere','id', '>', 6]]);
-
-        return view('demo', compact('result'));
     }
 }

@@ -22,7 +22,7 @@ class BaseRepository
     }
 
     // lấy tất cả bản ghi
-    public function fetchData()
+    public function fetchAll()
     {
         return $this->model->all();
     }
@@ -58,22 +58,22 @@ class BaseRepository
     }
 
     // lấy data theo câu where
-    public function whereQuery($queries)
-    {
-        $result = $this->model;
-
-        foreach ($queries as $query)
-        {
-            if ($query[0] === 'where')
-            {
-                $result = $result->where($query[1], $query[2], $query[3]);
-            } elseif ($query[0] === 'orWhere')
-            {
-                $result = $result->orWhere($query[1], $query[2], $query[3]);
-            }
-        }
-
-        return $result->get();
-    }
+//    public function whereQuery($queries)
+//    {
+//        $result = $this->model;
+//
+//        foreach ($queries as $query)
+//        {
+//            if ($query[0] === 'where')
+//            {
+//                $result = $result->where($query[1], $query[2], $query[3]);
+//            } elseif ($query[0] === 'orWhere')
+//            {
+//                $result = $result->orWhere($query[1], $query[2], $query[3]);
+//            }
+//        }
+//
+//        return $result->get();
+//    }
 
 }
