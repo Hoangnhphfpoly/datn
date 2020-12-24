@@ -22,15 +22,25 @@ class BaseRepository
     }
 
     // lấy tất cả bản ghi
-    public function fetchAll()
+    public function fetchAll(array $relations)
     {
-        return $this->model->all();
+        $result = $this->model;
+
+        if ($relations !== "" && $relations !== null){
+            $result = $result->with($relations);
+        }
+
+        return $result->get();
     }
 
     // tìm 1 bản ghi cụ thể bằng id
-    public function findById(int $id)
+    public function findById(int $id, array $relations)
     {
-        return $this->model->findOrFail($id);
+        $result = $this->model;
+        if ($relations !== "" && $relations !== null){
+            $result = $result->with($relations);
+        }
+        return $result->findOrFail($id);
     }
 
     // lưu mới bản ghi
@@ -48,7 +58,7 @@ class BaseRepository
     // xóa theo 1 id
     public function deleteById($id)
     {
-        return $this->model->delete($id);
+        return $this->model->where('id', $id)->delete();
     }
 
     // xóa theo danh sách id
