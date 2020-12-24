@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $user = $this->userRepository->fetchAll(['hasRole']);
+        $user = $this->userRepository->fetchAll(['hasRole'], ['age', 'asc']);
 
         return response()->json(['users' => $user, 'status' => 200], 200);
     }

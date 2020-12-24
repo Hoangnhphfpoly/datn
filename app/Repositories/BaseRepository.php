@@ -22,12 +22,18 @@ class BaseRepository
     }
 
     // lấy tất cả bản ghi
-    public function fetchAll(array $relations)
+    public function fetchAll(array $relations, array $orderBY)
     {
         $result = $this->model;
 
-        if ($relations !== "" && $relations !== null){
+        if ($relations !== "" && $relations !== null)
+        {
             $result = $result->with($relations);
+        }
+
+        if ($orderBY !== null && $orderBY !== "")
+        {
+            $result = $result->orderBy($orderBY[0], $orderBY[1]);
         }
 
         return $result->get();
@@ -37,9 +43,11 @@ class BaseRepository
     public function findById(int $id, array $relations)
     {
         $result = $this->model;
+
         if ($relations !== "" && $relations !== null){
             $result = $result->with($relations);
         }
+
         return $result->findOrFail($id);
     }
 
