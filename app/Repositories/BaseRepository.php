@@ -22,7 +22,8 @@ class BaseRepository
     }
 
     // lấy tất cả bản ghi
-    public function fetchAll(array $relations, array $orderBY)
+    public function fetchAll(array $relations, array $columns = ['*'])
+//    public function fetchAll(array $relations, array $orderBY)
     {
         $result = $this->model;
 
@@ -31,12 +32,12 @@ class BaseRepository
             $result = $result->with($relations);
         }
 
-        if ($orderBY !== null && $orderBY !== "")
-        {
-            $result = $result->orderBy($orderBY[0], $orderBY[1]);
-        }
+//        if ($orderBY !== null && $orderBY !== "")
+//        {
+//            $result = $result->orderBy($orderBY[0], $orderBY[1]);
+//        }
 
-        return $result->get();
+        return $result->get($columns);
     }
 
     // tìm 1 bản ghi cụ thể bằng id
@@ -49,6 +50,18 @@ class BaseRepository
         }
 
         return $result->findOrFail($id);
+    }
+
+    //lấy bản ghi theo tham số từ url
+    public function fetchData($param, $limit)
+    {
+        $result  = $this->model;
+
+        if (isset($param['orderBy'])){
+            $result = $result->orderBy($param['orderBy']);
+        }
+
+        $result->paginate($limit);
     }
 
     // lưu mới bản ghi
