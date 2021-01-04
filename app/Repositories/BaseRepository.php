@@ -32,11 +32,6 @@ class BaseRepository
             $result = $result->with($relations);
         }
 
-//        if ($orderBY !== null && $orderBY !== "")
-//        {
-//            $result = $result->orderBy($orderBY[0], $orderBY[1]);
-//        }
-
         return $result->get($columns);
     }
 

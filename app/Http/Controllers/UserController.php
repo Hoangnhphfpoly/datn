@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use function Symfony\Component\String\u;
 
 class UserController extends Controller
@@ -18,7 +19,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $user = $this->userRepository->fetchAll(['hasRole'], ['age', 'asc']);
+        $user = $this->userRepository->fetchAll(['hasRole']);
 
         return response()->json(['users' => $user, 'status' => 200], 200);
     }
@@ -30,12 +31,6 @@ class UserController extends Controller
         return response()->json(['user' => $user, 'status' => 200], 200);
     }
 
-//    public function demo(Request $request){
-//        $user = $this->userRepository->storeNew($request->all());
-//
-//        return response()->json($user, 200);
-//    }
-
     public function demo(Request $request)
     {
         DB::beginTransaction();
@@ -43,21 +38,28 @@ class UserController extends Controller
         {
             $user = $this->userRepository->storeNew($request->all());
 
-            $detail = User::where('id', 12345)->firstOrFail();
+            $detail = User::where('id', 1)->firstOrFail();
 
             DB::commit();
-            return response()->json($detail, 200);
+            return response()->json(['user'=>$user, 'status' => 201], 201);
         }
         catch (\Exception $e)
         {
             DB::rollBack();
-            return response()->json($e, 204);
+            return response()->json($e, 400);
         }
+    }
+
+    public function updateUser(Request $request)
+    {
+        $result = $this->userRepository->update($request->id, $request->all());
+
+        return response()->json(['result' => $result, 'status' => 200], 200);
     }
 
     public function delete($id)
     {
         $result = $this->userRepository->deleteById($id);
-        return response()->json($result, 200);
+        return response()->json(null, 204);
     }
 }
